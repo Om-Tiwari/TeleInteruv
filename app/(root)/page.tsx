@@ -1,9 +1,6 @@
 'use client';
 
 import React from "react";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import Image from "next/image";
 import JobDescriptionSelector from "@/components/JobDescriptionSelector";
 
 interface JDData {
@@ -16,8 +13,13 @@ interface JDData {
 const handleJDSelect = async (jd: JDData) => {
     // Optionally: show loading UI (use a state variable if needed)
     try {
-        // Store JD JSON in localStorage (non-blocking)
-        console.log(jd.json)
+        // Store JD JSON in state (non-blocking)
+        console.log(jd.json);
+        localStorage.setItem(`selectedJD`, JSON.stringify(jd.json));
+
+        // Redirect to interview page
+        window.location.href = '/interview';
+
 
     } catch (err) {
         // Handle error (show error UI or toast)

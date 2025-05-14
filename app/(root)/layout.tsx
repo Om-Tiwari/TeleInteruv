@@ -9,7 +9,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
             <nav>
                 <Link href="/" className='flex items-center gap-2'>
                     <Image src="/vercel.svg" alt="logo" width={32} height={32} />
-                    <h2 className='text-primary-100'>Interuv</h2>
+                    <h2 className='text-primary-100'>TeleInteruv</h2>
                 </Link>
             </nav>
 

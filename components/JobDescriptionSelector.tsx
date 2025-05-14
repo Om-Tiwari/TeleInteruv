@@ -26,6 +26,7 @@ const JobDescriptionSelector: React.FC<JobDescriptionSelectorProps> = ({ onSelec
   const [isLoading, setIsLoading] = useState(false);
   const [loadingStatus, setLoadingStatus] = useState<string | null>(null);
   const [loadingProgress, setLoadingProgress] = useState<number>(0);
+  const [search, setSearch] = useState<string>("");
 
   useEffect(() => {
     fetchJDs();
@@ -100,23 +101,41 @@ const JobDescriptionSelector: React.FC<JobDescriptionSelectorProps> = ({ onSelec
     );
   }
 
+  // Filter job descriptions based on search input
+  const filteredJds = jds.filter(jd =>
+    (jd.jobTitle || '').toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {jds.map((jd) => (
-        <Card
-          key={jd.id}
-          className="hover:shadow-lg transition cursor-pointer bg-card border-primary border-2"
-          onClick={() => onSelect(jd)}
-        >
-          <CardHeader>
-            <CardTitle>{jd.jobTitle}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-xs text-muted-foreground mb-2">Seniority: {jd.json.experienceLevel}</p>
-            <Button variant="outline" size="sm" className="w-full mt-2">Select</Button>
-          </CardContent>
-        </Card>
-      ))}
+    <div>
+      <input
+        type="text"
+        value={search}
+        onChange={e => setSearch(e.target.value)}
+        placeholder="Search job titles..."
+        className="mb-4 w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary"
+      />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {filteredJds.length === 0 ? (
+          <div className="col-span-3 text-center text-muted-foreground">No job titles found.</div>
+        ) : (
+          filteredJds.map((jd) => (
+            <Card
+              key={jd.id}
+              className="hover:shadow-lg transition cursor-pointer bg-card border-primary border-2"
+              onClick={() => onSelect(jd)}
+            >
+              <CardHeader>
+                <CardTitle>{jd.jobTitle}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-xs text-muted-foreground mb-2">Seniority: {jd.json.experienceLevel}</p>
+                <Button variant="outline" size="sm" className="w-full mt-2">Select</Button>
+              </CardContent>
+            </Card>
+          ))
+        )}
+      </div>
     </div>
   );
 };
